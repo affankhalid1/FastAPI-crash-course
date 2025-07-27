@@ -33,7 +33,7 @@ def update_tea(tea_id:int, updated_tea:Tea):
     for i, tea in enumerate(teas):
         if tea.id == tea_id:
             teas[i] = updated_tea
-            return update_tea
+            return updated_tea
     return {"error":"Invalid Tea ID."}
 
 @app.delete("/teas/{tea_id}")
