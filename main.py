@@ -22,13 +22,16 @@ def get_teas():
 
 @app.post("/teas")
 def add_tea(tea: Tea):
+    for existing in teas:
+        if existing.id == tea.id:
+            return {"error": "Tea with this ID already exists."}
     teas.append(tea)
     return f"This tea is successfully added {tea}"
 
 @app.put("/teas/{tea_id}")
 def update_tea(tea_id:int, updated_tea:Tea):
     for i, tea in enumerate(teas):
-        if tea["id"] == tea_id:
+        if tea.id == tea_id:
             teas[i] = updated_tea
             return update_tea
     return {"error":"Invalid Tea ID."}
@@ -37,6 +40,11 @@ def update_tea(tea_id:int, updated_tea:Tea):
 def delete_tea(tea_id:int):
     for tea in teas:
         if tea.id == tea_id:
-            deleted = teas.pop(tea)
-            return deleted
+            teas.remove(tea)
+            return tea
     return {"error":"Tea not found"}
+
+@app.delete("/teas")
+def delete_all_teas():
+    teas.clear()
+    return {"message": "All teas deleted."}
